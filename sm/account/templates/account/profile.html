@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3 class="text-center">{{ user.full_name }}</h3>
+    <small>{{ user.email }}</small>
+    <p>{{ user.phone_number }}</p>
+
+    <a href="{% url 'account:profile_update' user.id %}" class="btn btn-primary">EditProfile</a>
+
+
+{% endblock %}

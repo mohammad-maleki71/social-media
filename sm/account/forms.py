@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Profile
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 
@@ -52,5 +52,21 @@ class UserRegisterForm(forms.Form):
 
 class VerifyRegisterForm(forms.Form):
     code = forms.IntegerField()
+
+class UserLoginForm(forms.Form):
+    phone_number = forms.CharField(max_length=11)
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
+class UserProfileUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+    full_name = forms.CharField()
+    phone_number = forms.CharField()
+
+    class Meta:
+        model = Profile
+        fields = ('age', 'bio')
+
+
 
 

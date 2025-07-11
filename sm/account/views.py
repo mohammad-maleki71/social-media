@@ -1,10 +1,13 @@
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import UserRegisterForm, VerifyRegisterForm
+from .forms import UserRegisterForm, VerifyRegisterForm, UserLoginForm, UserProfileUpdateForm
 import random
 from utils import send_otp_code
 from .models import OtpCode, User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class UserRegisterView(View):
@@ -57,6 +60,72 @@ class UserVerifyRegisterView(View):
                 messages.error(request, 'your code is invalid', 'danger')
                 return redirect('account:verify_register')
         return render(request, self.template_name, {'form': form})
+
+class UserLoginView(View):
+    form_class = UserLoginForm
+    template_name = 'account/login.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home:home')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        form = self.form_class
+        return render(request, self.template_name, {'form':form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['phone_number'], password=cd['password'])
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'your login successfully', 'success')
+                return redirect('home:home')
+            else:
+                messages.error(request, 'your login is invalid', 'danger')
+            return redirect('account:login')
+        return render(request, self.template_name, {'form': form})
+
+class UserLogoutView(LoginRequiredMixin, View):
+    def get(self, request):
+        logout(request)
+        messages.success(request, 'your logout successfully', 'success')
+        return redirect('home:home')
+
+class UserProfileView(LoginRequiredMixin,View):
+    def get(self, request, user_id):
+        user = User.objects.get(id=request.user.id)
+        return render(request, 'account/profile.html', {'user':user})
+
+class UserProfileUpdateView(LoginRequiredMixin,View):
+    form_class = UserProfileUpdateForm
+    template_name = 'account/profile_update.html'
+
+    def get(self, request, user_id):
+        form = UserProfileUpdateForm(instance=request.user.profile, initial={'email': request.user.email,
+                                                                             'full_name': request.user.full_name,
+                                                                             'phone_number': request.user.phone_number
+                                                                             })
+        return render(request, self.template_name, {'form':form})
+
+    def post(self, request, user_id):
+        form = UserProfileUpdateForm(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            request.user.email = form.cleaned_data['email']
+            request.user.full_name = form.cleaned_data['full_name']
+            request.user.phone_number = form.cleaned_data['phone_number']
+            request.user.save()
+            messages.success(request, 'your profile updated successfully', 'success')
+            return redirect('account:profile', request.user.id)
+        return render(request, self.template_name, {'form':form})
+
+
+
+
+
 
 
 

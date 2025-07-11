@@ -1,13 +1,18 @@
 from django.contrib import admin
-from .models import User, OtpCode
+from .models import User, OtpCode, Profile
 from .forms import UserCreateForm, UserChangeForm
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin, GroupAdmin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
 
 
 class UserAdmin(BaseUserAdmin):
 
+    inlines = (ProfileInline, )
     form = UserChangeForm
     add_form = UserCreateForm
 
