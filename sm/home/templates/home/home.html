@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3> Home Page </h3>
+    {% for post in posts %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ post.image.url }}" class="card-img-top">
+            <div class="card-body">
+                <a href="{% url 'home:details' post.id %}" class="card-title">{{ post.title }}</a>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

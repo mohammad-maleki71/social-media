@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    {% if request.user.id != user.id and not is_following %}
+        <a class="btn btn-primary" href="{% url 'home:follow' user.id %}">Follow</a><br>
+    {% elif request.user.id != user.id and is_following %}
+        <a class="btn btn-primary" href="{% url 'home:unfollow' user.id %}">UNFollow</a><br>
+    {% endif %}
     <h3 class="text-center">{{ user.full_name }}</h3>
     <small>{{ user.email }}</small>
     <p>{{ user.phone_number }}</p>
-
-    <a href="{% url 'account:profile_update' user.id %}" class="btn btn-primary">EditProfile</a>
-
+    {% if request.user.id == user.id %}
+        <a href="{% url 'account:profile_update' user.id %}" class="btn btn-primary">EditProfile</a><br>
+    {% endif %}
+        {% for post in posts %}
+            <a href="{% url 'home:details' post.id %}">{{ post.title }}</a>
+        {% endfor %}
 
 {% endblock %}

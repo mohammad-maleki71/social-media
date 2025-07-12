@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <a href="{% url 'account:profile' post.user.id %}">{{ post.user }}</a><br>
+    <img src="{{ post.image.url }}" alt=""><br>
+    {% if request.user.id == post.user.id %}
+        <a class="btn btn-danger" href="{% url 'home:delete' post.id %}">Delete</a>
+        <a class="btn btn-info" href="{% url 'home:update' post.id %}">Update</a>
+        <a class="btn btn-primary" href="{% url 'home:create' %}">Create</a>
+    {% endif %}
+    <div class="text-center">
+        <p>{{ post.title }}</p>
+        <p>{{ post.content }}</p>
+    </div>
+
+{% endblock %}
