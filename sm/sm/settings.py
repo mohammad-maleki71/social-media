@@ -123,6 +123,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -130,4 +132,13 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'account.User'
 LOGIN_URL = '/account/login/'
+
+#Goodle Account:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'malekimohammad950@gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_PASSWORD = 'hjiquksgfvoqrjyb'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'social_media'
 
