@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <form class="text-center" action="" method="get">
+        {{ form.as_p }}
+        <input type="submit" value="search">
+    </form>
+
     {% for post in posts %}
         <div class="card" style="width: 18rem;">
             <img src="{{ post.image.url }}" class="card-img-top">

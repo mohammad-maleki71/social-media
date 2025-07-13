@@ -1,22 +1,51 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.contrib import messages
-from home.models import Post, Relation
-from .forms import PostUpdateCreateForm
+from home.models import Post, Relation, Comment, Like
+from .forms import PostUpdateCreateForm, CommentCreateForm, ReplyCreateForm, PostSearchForm
 from django.utils.text import slugify
 from account.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+
 class HomeView(View):
+    form_class = PostSearchForm
     def get(self, request):
         posts = Post.objects.all()
-        return render(request, 'home/home.html', {'posts': posts})
+        if request.GET.get('search'):
+            posts = posts.filter(content__icontains=request.GET['search'])
+        return render(request, 'home/home.html', {'posts': posts, 'form': self.form_class})
 
 
 class PostDetailsView(View):
-    def get(self, request, post_id):
-        post = Post.objects.get(id=post_id)
-        return render(request, 'home/details.html', {'post': post})
+    form_class = CommentCreateForm
+    form_class_reply = ReplyCreateForm
+    def setup(self, request, *args, **kwargs):
+        self.post_instance = Post.objects.get(pk=kwargs['post_id'])
+        return super().setup(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        comments = self.post_instance.pcomment.filter(is_reply=False)
+        can_like = False
+        if request.user.is_authenticated and self.post_instance.user_can_like(request.user):
+            can_like = True
+        return render(request, 'home/details.html', {'post': self.post_instance, 'comments': comments, 'form': self.form_class, 'form_reply': self.form_class_reply, 'can_like': can_like})
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        comments = self.post_instance.pcomment.filter(is_reply=False)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.post_instance
+            comment.user = request.user
+            comment.save()
+            messages.success(request, 'Comment saved','success')
+            return redirect('home:details', self.post_instance.id)
+        return render(request, 'home/details.html', {'post': self.post_instance, 'comments': comments, 'form': self.form_class})
 
 class PostDeleteView(View):
     def get(self, request, post_id):
@@ -100,6 +129,32 @@ class UnFollowView(LoginRequiredMixin,View):
         else:
             messages.error(request, 'You do not have permission to follow', 'danger')
         return redirect('account:profile', user.id)
+
+
+class CommentReplyView(LoginRequiredMixin, View):
+    def post(self, request, post_id, comment_id):
+        form = ReplyCreateForm(request.POST)
+        comment = Comment.objects.get(id=comment_id)
+        post = Post.objects.get(id=post_id)
+        if form.is_valid():
+            new_reply = form.save(commit=False)
+            new_reply.user = request.user
+            new_reply.post = post
+            new_reply.reply = comment
+            new_reply.save()
+            messages.success(request, 'you reply saved', 'success')
+        return redirect('home:details', post.id)
+
+class LikeView(LoginRequiredMixin, View):
+    def get(self, request, post_id):
+        post = Post.objects.get(id=post_id)
+        likes = Like.objects.filter(user=request.user, post=post)
+        if likes.exists():
+            messages.error(request, 'You already liked this post', 'danger')
+        else:
+            Like.objects.create(user=request.user, post=post)
+            messages.success(request, 'You like successfully', 'success')
+        return redirect('home:details', post.id)
 
 
 

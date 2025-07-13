@@ -14,4 +14,30 @@
         <p>{{ post.content }}</p>
     </div>
 
+    <a href="{% url 'home:like' post.id %}" class="{% if can_like %} disabled {% endif %}btn btn-primary">Like</a><hr>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="comment" >
+    </form>
+
+        {% for comment in comments %}
+            <a href="{% url 'account:profile' comment.user.id %}">{{ comment.user }} {{ comment.created|timesince }}</a>
+            <p class="card-header" >{{ comment.content }}</p>
+            {% with replies=comment.rcomment.all %}
+            {% for reply in replies %}
+                <p>{{ reply.user }} <br/> {{ reply.content }}</p>
+                <form action="{% url 'home:reply' post.id comment.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form_reply.as_p }}
+                    <input type="submit" value="reply">
+                </form>
+            {% endfor %}
+            {% endwith %}
+        {% empty %}
+            <P>no comment yet!</P>
+        {% endfor %}
+
+
 {% endblock %}

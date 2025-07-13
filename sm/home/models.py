@@ -17,6 +17,12 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created']
 
+    def user_can_like(self, user):
+        user_like = user.ulike.filter(post=self)
+        if user_like.exists():
+            return True
+        return False
+
 class Relation(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='frelations')
     to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='trelations')
@@ -24,3 +30,30 @@ class Relation(models.Model):
 
     def __str__(self):
         return f'{self.from_user} follow {self.to_user}'
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='pcomment')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ucomment')
+    is_reply = models.BooleanField(default=False)
+    reply = models.ForeignKey('self', on_delete=models.CASCADE, related_name='rcomment', null=True, blank=True)
+    content = models.TextField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user} {self.content[:20]}'
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='plike')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ulike')
+
+    def __str__(self):
+        return f'{self.user} liked {self.post}'
+
+
+
+
+
+
+
+

@@ -10,4 +10,7 @@ urlpatterns = [
     path('create/', views.PostCreateView.as_view(), name='create'),
     path('follow/<int:user_id>/', views.FollowView.as_view(), name='follow'),
     path('unfollow/<int:user_id>/', views.UnFollowView.as_view(), name='unfollow'),
+    path('reply/<int:post_id>/<int:comment_id>/', views.CommentReplyView.as_view(), name='reply'),
+    path('like/<int:post_id>/', views.LikeView.as_view(), name='like'),
+
 ]
