@@ -10,10 +10,14 @@
     <small>{{ user.email }}</small>
     <p>{{ user.phone_number }}</p>
     {% if request.user.id == user.id %}
-        <a href="{% url 'account:profile_update' user.id %}" class="btn btn-primary">EditProfile</a><br>
-    {% endif %}
+        <a href="{% url 'account:profile_update' user.id %}" class="btn btn-primary">EditProfile</a><br><hr>
+        <a class="btn btn-primary" href="{% url 'home:create' %}">Create a Post</a>
+    {% endif %}<br>
+    <div class="card card-body">
         {% for post in posts %}
-            <a href="{% url 'home:details' post.id %}">{{ post.title }}</a>
+            <a href="{% url 'home:details' post.id %}">{{ post.title }}</a><br>
         {% endfor %}
+    </div>
+
 
 {% endblock %}

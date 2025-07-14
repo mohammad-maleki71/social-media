@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
+
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-4">
         {{ form.as_p }}
-        <input type="submit" value="create">
+        <input type="submit" value="send">
+    </div>
+
     </form>
 {% endblock %}

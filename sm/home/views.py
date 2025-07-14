@@ -16,7 +16,7 @@ class HomeView(View):
     def get(self, request):
         posts = Post.objects.all()
         if request.GET.get('search'):
-            posts = posts.filter(content__icontains=request.GET['search'])
+            posts = posts.filter(title__icontains=request.GET['search'])
         return render(request, 'home/home.html', {'posts': posts, 'form': self.form_class})
 
 
@@ -96,7 +96,7 @@ class PostCreateView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             first_post = form.save(commit=False)
             first_post.user = request.user
