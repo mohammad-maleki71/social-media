@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_headers %}
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+{% endblock %}
 
 {% block content %}
-    <p>Home Page Hello Users </p>
-    <form class="text-center" action="" method="get">
-        {{ form.as_p }}
-        <input type="submit" value="search">
-    </form>
+{#    <h3 class="text-center"> ************ SOCIAL MEDIA ************ </h3>#}
+{#    <form class="text-center" action="" method="get">#}
+{#        {{ form.as_p }}#}
+{#        <input type="submit" value="search">#}
+{#    </form>#}
 
     {% for post in posts %}
-        <div class="card" style="width: 18rem;">
+        <div class="border" style="width: 18rem;">
             <img src="{{ post.image.url }}" class="card-img-top">
             <div class="card-body">
                 <a href="{% url 'home:details' post.id %}" class="card-title">{{ post.title }}</a>

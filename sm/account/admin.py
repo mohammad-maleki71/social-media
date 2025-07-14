@@ -5,14 +5,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 
 
-class ProfileInline(admin.StackedInline):
-    model = Profile
-    can_delete = False
-
-
 class UserAdmin(BaseUserAdmin):
 
-    inlines = (ProfileInline, )
     form = UserChangeForm
     add_form = UserCreateForm
 
@@ -31,6 +25,14 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('email', 'full_name')
     ordering = ('full_name',)
     filter_horizontal = ()
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'age', 'bio')
+    list_filter = ('user',)
+    raw_id_fields = ('user',)
+
 
 admin.site.register(User, UserAdmin)
 admin.site.unregister(Group)
