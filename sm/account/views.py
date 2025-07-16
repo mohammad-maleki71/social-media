@@ -12,7 +12,7 @@ from django.contrib.auth import views as auth_view
 from django.urls import reverse_lazy
 from home.models import Relation
 from account.utils import normalize_phone_number
-import logging
+from django.utils.timezone import now
 
 
 class UserRegisterView(View):
@@ -35,6 +35,7 @@ class UserRegisterView(View):
                 'full_name': form.cleaned_data['full_name'],
                 'password': form.cleaned_data['password2'],
             }
+            request.session['code_sent_time'] = str(now().timestamp())
             messages.success(request, 'your code sent successfully', 'success')
             return redirect('account:verify_register')
         return render(request, self.template_name, {'form': form})
@@ -43,40 +44,73 @@ class UserRegisterView(View):
 class UserVerifyRegisterView(View):
     form_class = VerifyRegisterForm
     template_name = 'account/verify_register.html'
+    code_expiration_seconds = 120
 
     def get(self, request):
         form = self.form_class()
-        return render(request, self.template_name, {'form':form})
+        sent_time = request.session.get('code_sent_time')
+
+        if sent_time:
+            elapsed = now().timestamp() - float(sent_time)
+            if elapsed > self.code_expiration_seconds:
+                messages.error(request, 'کد تایید منقضی شده است. لطفا دوباره ثبت‌نام کنید.', 'danger')
+                return redirect('account:register')
+            remaining_seconds = max(0, int(self.code_expiration_seconds - elapsed))
+        else:
+            messages.error(request, 'لطفا ابتدا ثبت‌نام را آغاز کنید.', 'danger')
+            return redirect('account:register')
+        return render(request, self.template_name, {
+            'form': form,
+            'remaining_seconds': remaining_seconds
+        })
 
     def post(self, request):
-
         user_session = request.session.get('user_register_info')
+        if not user_session:
+            messages.error(request, 'اطلاعات ثبت‌نام یافت نشد، لطفا دوباره تلاش کنید.', 'danger')
+            return redirect('account:register')
+
+        sent_time = request.session.get('code_sent_time')
+        if sent_time:
+            elapsed = now().timestamp() - float(sent_time)
+            if elapsed > self.code_expiration_seconds:
+                messages.error(request, 'کد تایید منقضی شده است. لطفا دوباره ثبت‌نام کنید.', 'danger')
+                return redirect('account:register')
+        else:
+            messages.error(request, 'زمان ارسال کد مشخص نیست. لطفا دوباره ثبت‌نام کنید.', 'danger')
+            return redirect('account:register')
 
         phone_number = normalize_phone_number(user_session['phone_number'])
         user_session['phone_number'] = phone_number
-
-        code_instance = OtpCode.objects.get(phone_number=phone_number)
+        try:
+            code_instance = OtpCode.objects.get(phone_number=phone_number)
+        except OtpCode.DoesNotExist:
+            messages.error(request, 'کد تایید معتبر یافت نشد.', 'danger')
+            return redirect('account:verify_register')
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             if code_instance.code == cd['code']:
-                User.objects.create_user(phone_number,
-                                         user_session['email'],
-                                         user_session['full_name'],
-                                         user_session['password']
-                                         )
+                User.objects.create_user(
+                    phone_number,
+                    user_session['email'],
+                    user_session['full_name'],
+                    user_session['password']
+                )
                 code_instance.delete()
+                request.session.pop('code_sent_time', None)
+                request.session.pop('user_register_info', None)
                 messages.success(request, 'ثبت نام شما با موفقیت انجام شد.', 'success')
                 return redirect('home:home')
             else:
                 messages.error(request, 'کد تایید وارد شده معتبر نیست', 'danger')
                 return redirect('account:verify_register')
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {
+            'form': form,
+            'remaining_seconds': 0
+        })
 
-
-logger = logging.getLogger('django')
 class UserLoginView(View):
-    logger.info("UserLoginView POST called")
     form_class = UserLoginForm
     template_name = 'account/login.html'
 
@@ -95,21 +129,17 @@ class UserLoginView(View):
 
     def post(self, request):
         form = self.form_class(request.POST)
-        logger.info(f"Form data received: {request.POST}")
         if form.is_valid():
             cd = form.cleaned_data
             phone_number = normalize_phone_number(cd['phone_number'])
-            logger.info(f"Login attempt from phone number: {phone_number}")
             user = authenticate(request, username=phone_number, password=cd['password'])
             if user is not None:
                 login(request, user)
-                logger.info(f"Login successful for phone number: {phone_number}")
                 messages.success(request, 'your login successfully', 'success')
                 if self.next:
                     return redirect(self.next)
                 return redirect('home:home')
             else:
-                logger.warning(f"Login failed for phone number: {phone_number}")
                 messages.error(request, 'your login is invalid', 'danger')
             return redirect('account:login')
         return render(request, self.template_name, {'form': form})

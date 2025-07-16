@@ -110,3 +110,109 @@ UserLoginView POST called
 - Broken pipe from ('127.0.0.1', 54233)
 - Broken pipe from ('127.0.0.1', 54235)
 "GET / HTTP/1.1" 200 6552
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 6552
+"GET /static/home/css/style.css HTTP/1.1" 304 0
+"GET /static/css/base_styles.css HTTP/1.1" 200 97
+"GET /media/posts/2025/07/13/world.jpeg HTTP/1.1" 200 12787
+"GET /media/posts/2025/07/14/lion.jpeg HTTP/1.1" 304 0
+Not Found: /favicon.ico
+- Broken pipe from ('127.0.0.1', 64831)
+"GET /register/ HTTP/1.1" 200 7035
+"GET /login/ HTTP/1.1" 200 6581
+"GET /register/ HTTP/1.1" 200 7035
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 6552
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 6638
+"GET /static/account/css/style.css HTTP/1.1" 200 933
+"GET /static/account/js/timer.js HTTP/1.1" 200 483
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 6552
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 6638
+"GET /static/account/css/style.css HTTP/1.1" 304 0
+"GET /static/account/js/timer.js HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 6552
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 6638
+"GET /static/account/css/style.css HTTP/1.1" 304 0
+"GET /static/account/js/timer.js HTTP/1.1" 304 0
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 6552
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 6638
+"GET /static/account/css/style.css HTTP/1.1" 304 0
+"GET /static/account/js/timer.js HTTP/1.1" 304 0
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 200 6552
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 302 0
+"GET /register/ HTTP/1.1" 200 7238
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 3057
+"GET / HTTP/1.1" 200 6554
+"GET /media/posts/2025/07/14/lion.jpeg HTTP/1.1" 304 0
+"GET /static/css/base_styles.css HTTP/1.1" 304 0
+"GET /static/home/css/style.css HTTP/1.1" 304 0
+"GET /media/posts/2025/07/13/world.jpeg HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 5803
+"GET /admin/ HTTP/1.1" 200 10980
+"GET /admin/account/otpcode/ HTTP/1.1" 200 11405
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/account/otpcode/ HTTP/1.1" 200 9288
+"POST /admin/account/otpcode/ HTTP/1.1" 302 0
+"GET /admin/account/otpcode/ HTTP/1.1" 200 10008
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /verify/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6670
+"GET /login/ HTTP/1.1" 200 6581
+"GET /admin/account/user/ HTTP/1.1" 200 16493
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/account/user/ HTTP/1.1" 200 16493
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/account/user/29/change/ HTTP/1.1" 200 13899
+"GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-clock.svg HTTP/1.1" 304 0
+"POST /login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6641
+"GET /profile/29/ HTTP/1.1" 200 5619
+"GET / HTTP/1.1" 200 6555
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6639
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /login/ HTTP/1.1" 200 6581
+"POST /login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6641
+"GET /profile/29/ HTTP/1.1" 200 5619
+"GET / HTTP/1.1" 200 6555
