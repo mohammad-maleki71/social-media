@@ -1,9 +1,124 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>تایید شماره موبایل</title>
+    <style>
+        body {
+            font-family: Tahoma;
+            background-color: #f8f8f8;
+            direction: rtl;
+            text-align: center;
+            padding: 30px;
+        }
 
-{% block content %}
-    <form action="" method="post" novalidate>
+        .container {
+            display: inline-block;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .expired {
+            color: red;
+            font-weight: bold;
+        }
+
+        .timer {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>کد تایید ارسال شده را وارد کنید</h2>
+
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="timer" id="countdown">
+        زمان باقی‌مانده: <span id="time">{{ remaining_seconds }}</span> ثانیه
+    </div>
+
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Register">
+        <button type="submit" id="submit-btn">تایید</button>
     </form>
-{% endblock %}
+
+    <div class="expired" id="expired-message" style="display: none;">
+        زمان وارد کردن کد به پایان رسیده است.
+    </div>
+
+</div>
+
+<script>
+    let remaining = parseInt("{{ remaining_seconds }}");
+    const timeSpan = document.getElementById('time');
+    const expiredMsg = document.getElementById('expired-message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function updateTimer() {
+        if (remaining > 0) {
+            remaining -= 1;
+            timeSpan.textContent = remaining;
+        } else {
+            clearInterval(timerInterval);
+            timeSpan.textContent = 0;
+            expiredMsg.style.display = 'block';
+            submitBtn.disabled = true;
+        }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+</script>
+
+</body>
+</html>
