@@ -54,8 +54,23 @@ class VerifyRegisterForm(forms.Form):
     code = forms.IntegerField()
 
 class UserLoginForm(forms.Form):
-    phone_number = forms.CharField(max_length=11)
-    password = forms.CharField(widget=forms.PasswordInput)
+    phone_number = forms.CharField(
+        label="شماره تلفن",
+        max_length=11,
+        widget=forms.TextInput(attrs={
+            'type': 'tel',
+            'autocomplete': 'tel',
+            'inputmode': 'numeric',
+            'pattern': '[0-9]{11}',
+            'placeholder': 'مثلاً 09123456789'
+        })
+    )
+    password = forms.CharField(
+        label="رمز عبور",
+        widget=forms.PasswordInput(attrs={
+            'autocomplete': 'current-password'
+        })
+    )
 
 
 class UserProfileUpdateForm(forms.ModelForm):

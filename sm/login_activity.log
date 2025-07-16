@@ -1,0 +1,112 @@
+Watching for file changes with StatReloader
+C:\Users\Mmd\Desktop\social media\sm\sm\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /login/ HTTP/1.1" 200 6244
+"POST /login/ HTTP/1.1" 200 6516
+"GET /login/ HTTP/1.1" 200 6244
+"POST /login/ HTTP/1.1" 200 6516
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+UserLoginView POST called
+"GET /login/ HTTP/1.1" 200 6244
+"POST /login/ HTTP/1.1" 200 6516
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+UserLoginView POST called
+C:\Users\Mmd\Desktop\social media\sm\account\views.py changed, reloading.
+Watching for file changes with StatReloader
+UserLoginView POST called
+Watching for file changes with StatReloader
+UserLoginView POST called
+"GET / HTTP/1.1" 200 6552
+"GET /login/ HTTP/1.1" 200 6244
+Form data received: <QueryDict: {'csrfmiddlewaretoken': ['ifzZya3fEC3Hn5IaK9ohuzkcLFZwvSPDOGS7qPJbEgpIqxpvUkKrJ7g8EBE7DGPM'], 'phone_number': ['yu@email.com'], 'password': ['Accem71$']}>
+"POST /login/ HTTP/1.1" 200 6516
+"GET /login/ HTTP/1.1" 200 6244
+"GET / HTTP/1.1" 200 6552
+"GET /login/ HTTP/1.1" 200 6244
+Watching for file changes with StatReloader
+UserLoginView POST called
+"GET / HTTP/1.1" 200 6552
+"GET /login/ HTTP/1.1" 200 6440
+"GET /admin/account/user/ HTTP/1.1" 200 15275
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Form data received: <QueryDict: {'csrfmiddlewaretoken': ['igvxeSkBlJDCuBIMpvPNudx5ls9Sd8IKOHOF6x0xlnZDx3p7zGbXJLt1eoOtlWIT'], 'phone_number': ['09141234567'], 'password': ['Accem71$']}>
+Login attempt from phone number: 09141234567
+Login successful for phone number: 09141234567
+"POST /login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6641
+"GET /profile/26/ HTTP/1.1" 200 5615
+"GET / HTTP/1.1" 200 6555
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6639
+C:\Users\Mmd\Desktop\social media\sm\account\forms.py changed, reloading.
+Watching for file changes with StatReloader
+UserLoginView POST called
+"GET / HTTP/1.1" 200 6552
+"GET /login/ HTTP/1.1" 200 6581
+Watching for file changes with StatReloader
+UserLoginView POST called
+"GET / HTTP/1.1" 200 6552
+"GET /login/ HTTP/1.1" 200 6581
+"GET /register/ HTTP/1.1" 200 7035
+"GET /login/ HTTP/1.1" 200 6581
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 5887
+"GET /admin/account/user/ HTTP/1.1" 200 15275
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/account/otpcode/ HTTP/1.1" 200 9869
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /verify/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6670
+"GET /login/ HTTP/1.1" 200 6581
+"GET /login/ HTTP/1.1" 200 6581
+"GET /login/ HTTP/1.1" 200 6581
+"GET /login/?phone_number=09201234567&password=Accem71%24 HTTP/1.1" 200 6581
+"GET / HTTP/1.1" 200 6552
+"GET /login/ HTTP/1.1" 200 6581
+Form data received: <QueryDict: {'csrfmiddlewaretoken': ['c4r1D7Sh1788ACMq6pxWr2LOYYFMMRL5KDr8d4HlLO3qOGDogOVMnTZIBDIPH6Ty'], 'phone_number': ['09201234567'], 'password': ['Accem71$']}>
+Login attempt from phone number: 09201234567
+Login successful for phone number: 09201234567
+"POST /login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6641
+"GET /profile/27/ HTTP/1.1" 200 5616
+"GET / HTTP/1.1" 200 6555
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6639
+"GET /login/ HTTP/1.1" 200 6581
+Form data received: <QueryDict: {'csrfmiddlewaretoken': ['GmUAqpIPeJkzIBnT4kJ62ZpeRnoPwE1v2w2KEv6nejkSGMzVdnwYKMTKKWgOjy8f'], 'phone_number': ['09106553511'], 'password': ['Accem71$']}>
+Login attempt from phone number: 09106553511
+Login successful for phone number: 09106553511
+"POST /login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6640
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6639
+"GET /login/ HTTP/1.1" 200 6581
+"GET /register/ HTTP/1.1" 200 7035
+"POST /register/ HTTP/1.1" 302 0
+"GET /verify/ HTTP/1.1" 200 5887
+"GET /admin/account/otpcode/ HTTP/1.1" 200 9869
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /verify/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6670
+"GET /login/ HTTP/1.1" 200 6581
+Form data received: <QueryDict: {'csrfmiddlewaretoken': ['o4mv3YwdtzbktNp5hZ86rIGFif0T04hHcaaV45eZPbC0VloNxiA7663ZjqZvFL0I'], 'phone_number': ['09301234567'], 'password': ['Accem71$']}>
+Login attempt from phone number: 09301234567
+Login successful for phone number: 09301234567
+"POST /login/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6641
+"GET /profile/28/ HTTP/1.1" 200 5623
+"GET / HTTP/1.1" 200 6555
+"GET /logout/ HTTP/1.1" 302 0
+"GET / HTTP/1.1" 200 6639
+Watching for file changes with StatReloader
+UserLoginView POST called
+"GET / HTTP/1.1" 200 6552
+- Broken pipe from ('127.0.0.1', 54219)
+- Broken pipe from ('127.0.0.1', 54234)
+- Broken pipe from ('127.0.0.1', 54233)
+- Broken pipe from ('127.0.0.1', 54235)
+"GET / HTTP/1.1" 200 6552

@@ -11,6 +11,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_view
 from django.urls import reverse_lazy
 from home.models import Relation
+from account.utils import normalize_phone_number
+import logging
 
 
 class UserRegisterView(View):
@@ -26,8 +28,9 @@ class UserRegisterView(View):
             random_code = random.randint(1000, 9999)
             send_otp_code(form.cleaned_data['phone_number'], random_code)
             OtpCode.objects.create(phone_number=form.cleaned_data['phone_number'], code=random_code)
+            phone_number = normalize_phone_number(form.cleaned_data['phone_number'])
             request.session['user_register_info'] = {
-                'phone_number': form.cleaned_data['phone_number'],
+                'phone_number': phone_number,
                 'email': form.cleaned_data['email'],
                 'full_name': form.cleaned_data['full_name'],
                 'password': form.cleaned_data['password2'],
@@ -40,31 +43,40 @@ class UserRegisterView(View):
 class UserVerifyRegisterView(View):
     form_class = VerifyRegisterForm
     template_name = 'account/verify_register.html'
+
     def get(self, request):
-        form = self.form_class
+        form = self.form_class()
         return render(request, self.template_name, {'form':form})
 
     def post(self, request):
-        user_session = request.session['user_register_info']
-        code_instance = OtpCode.objects.get(phone_number=user_session['phone_number'])
+
+        user_session = request.session.get('user_register_info')
+
+        phone_number = normalize_phone_number(user_session['phone_number'])
+        user_session['phone_number'] = phone_number
+
+        code_instance = OtpCode.objects.get(phone_number=phone_number)
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             if code_instance.code == cd['code']:
-                User.objects.create_user(user_session['phone_number'],
+                User.objects.create_user(phone_number,
                                          user_session['email'],
                                          user_session['full_name'],
                                          user_session['password']
                                          )
                 code_instance.delete()
-                messages.success(request, 'your registered successfully', 'success')
+                messages.success(request, 'ثبت نام شما با موفقیت انجام شد.', 'success')
                 return redirect('home:home')
             else:
-                messages.error(request, 'your code is invalid', 'danger')
+                messages.error(request, 'کد تایید وارد شده معتبر نیست', 'danger')
                 return redirect('account:verify_register')
         return render(request, self.template_name, {'form': form})
 
+
+logger = logging.getLogger('django')
 class UserLoginView(View):
+    logger.info("UserLoginView POST called")
     form_class = UserLoginForm
     template_name = 'account/login.html'
 
@@ -83,16 +95,21 @@ class UserLoginView(View):
 
     def post(self, request):
         form = self.form_class(request.POST)
+        logger.info(f"Form data received: {request.POST}")
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(request, username=cd['phone_number'], password=cd['password'])
+            phone_number = normalize_phone_number(cd['phone_number'])
+            logger.info(f"Login attempt from phone number: {phone_number}")
+            user = authenticate(request, username=phone_number, password=cd['password'])
             if user is not None:
                 login(request, user)
+                logger.info(f"Login successful for phone number: {phone_number}")
                 messages.success(request, 'your login successfully', 'success')
                 if self.next:
                     return redirect(self.next)
                 return redirect('home:home')
             else:
+                logger.warning(f"Login failed for phone number: {phone_number}")
                 messages.error(request, 'your login is invalid', 'danger')
             return redirect('account:login')
         return render(request, self.template_name, {'form': form})

@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="login">
-    </form>
+<form method="post" autocomplete="on">
+    {% csrf_token %}
+    <label for="id_phone_number">شماره تلفن:</label>
+    <input type="tel"
+           name="phone_number"
+           id="id_phone_number"
+           autocomplete="tel"
+           maxlength="11"
+           inputmode="numeric"
+           pattern="[0-9]{11}"
+           placeholder="مثلاً 09123456789"
+           required />
+
+    <label for="id_password">رمز عبور:</label>
+    <input type="password"
+           name="password"
+           id="id_password"
+           autocomplete="current-password"
+           required />
+
+    <button type="submit">ورود</button>
+</form>
     <a href="{% url 'account:reset_password' %}" class="btn btn-danger">ResetPassword</a>
 {% endblock %}
